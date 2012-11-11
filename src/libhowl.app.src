@@ -1,0 +1,13 @@
+{application, libhowl,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+		  mdns_client_lib
+                 ]},
+  {mod, { libhowl_app, []}},
+  {env, [{domain, ".local"}]}
+ ]}.
