@@ -1,7 +1,7 @@
 -module(libhowl).
 
 -export([
-	 start/0, 
+	 start/0,
 	 servers/0
 	]).
 
@@ -43,10 +43,7 @@ servers() ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send(Channel::term(), Message::term()) -> 
-		  {ok, Token::{token, binary()}} |
-		  {error, not_found}.
-
+-spec send(Channel::term(), Message::term()) -> ok.
 send(Channel, Message) ->
     send({msg, Channel, Message}).
 
@@ -61,6 +58,6 @@ send(Channel, Message) ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send(Msg::term()) -> {ok, Reply::term()} | {error, no_server}.
+-spec send(Msg::term()) -> ok.
 send(Msg) ->
     libhowl_server:cast(Msg).

@@ -1,48 +1,66 @@
-APP_NAME=libhowl
-APP_DIR=.
-OBJ=$(shell ls $(APP_DIR)/src/*.erl | sed -e 's/\.erl$$/.beam/' | sed -e 's;^$(APP_DIR)/src;$(APP_DIR)/ebin;g') $(shell ls $(APP_DIR)/src/*.app.src | sed -e 's/\.src$$//g' | sed -e 's;^$(APP_DIR)/src;$(APP_DIR)/ebin;g')
-DEPS=$(shell cat rebar.config  |sed -e 's/%.*//'| sed -e '/{\(\w\+\), [^,]\+, {\w\+, [^,]\+, {[^,]\+, [^}]\+}}},\?/!d' | sed -e 's;{\(\w\+\), [^,]\+, {\w\+, [^,]\+, {[^,]\+, [^}]\+}}},\?;deps/\1/rebar.config;')
-ERL=erl
-PA=$(shell pwd)/$(APP_DIR)/ebin 
-ERL_LIBS=`pwd`/deps/
-REBAR=./rebar
+REBAR = $(shell pwd)/rebar
 
-all: $(DEPS) $(OBJ)
+.PHONY: deps rel package
+
+all: deps compile
+
+compile:
+	$(REBAR) compile
+
+deps:
+	$(REBAR) get-deps
+
+clean:
+	$(REBAR) clean
+
+distclean: clean 
+	$(REBAR) delete-deps
 
 test:
-	echo $(DEPS)
-	echo $(OBJ)
+	$(REBAR) skip_deps=true eunit
 
-doc: FORCE
-	$(REBAR) doc
-clean: FORCE
-	$(REBAR) clean
-	-rm *.beam erl_crash.dump
-	-rm -r rel/$(APP_NAME)
-	-rm rel/$(APP_NAME).tar.bz2
+###
+### Docs
+###
+docs:
+	$(REBAR) skip_deps=true doc
 
-$(DEPS):
-	$(REBAR) get-deps
-	$(REBAR) compile
+##
+## Developer targets
+##
 
-$(APP_DIR)/ebin/%.app: $(APP_DIR)/src/%.app.src
-	$(REBAR) compile
+xref:
+	$(REBAR) xref skip_deps=true
 
-$(APP_DIR)/ebin/%.beam: $(APP_DIR)/src/%.erl
-	$(REBAR) compile
 
-shell: all
-	ERL_LIBS="$(ERL_LIBS)" $(ERL) -pa $(PA) deps/*/ebin -s libhowl
-	[ -f *.beam ] && rm *.beam || true
-	[ -f erl_crash.dump ] && rm erl_crash.dump || true
+##
+## Dialyzer
+##
+APPS = kernel stdlib sasl erts ssl tools os_mon runtime_tools crypto inets \
+	xmerl webtool snmp public_key mnesia eunit syntax_tools compiler
+COMBO_PLT = $(HOME)/.libhowl_combo_dialyzer_plt
 
-remove_trash:
-	-find . -name "*~" -exec rm {} \;.
-	-rm *.beam erl_crash.dump
-FORCE:
+check_plt: deps compile
+	dialyzer --check_plt --plt $(COMBO_PLT) --apps $(APPS) \
+		deps/*/ebin ebin
 
-clean-docs:
-	-rm doc/*.html doc/*.png doc/*.css doc/edoc-info
+build_plt: deps compile
+	dialyzer --build_plt --output_plt $(COMBO_PLT) --apps $(APPS) \
+		deps/*/ebin ebin
 
-docs: clean-docs
-	@$(REBAR) doc skip_deps=true
+dialyzer: deps compile
+	@echo
+	@echo Use "'make check_plt'" to check PLT prior to using this target.
+	@echo Use "'make build_plt'" to build PLT prior to using this target.
+	@echo
+	@sleep 1
+	dialyzer -Wno_return --plt $(COMBO_PLT) deps/*/ebin ebin | grep -v -f dialyzer.mittigate
+
+
+cleanplt:
+	@echo
+	@echo "Are you sure?  It takes about 1/2 hour to re-build."
+	@echo Deleting $(COMBO_PLT) in 5 seconds.
+	@echo
+	sleep 5
+	rm $(COMBO_PLT)
