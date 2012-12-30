@@ -11,8 +11,6 @@
          version/0
         ]).
 
--include("libhowl_version.hrl").
-
 %%%===================================================================
 %%% Generatl Functions
 %%%===================================================================
@@ -38,8 +36,8 @@ start() ->
 
 -spec version() -> ok.
 version() ->
-    {reply, ServerVersion} = libhowl_server:call(version),
-    {?VERSION, ServerVersion}.
+    ServerVersion = call(version),
+    ServerVersion.
 
 
 %%--------------------------------------------------------------------
@@ -76,3 +74,15 @@ send(Channel, Message) ->
 -spec send(Msg::term()) -> ok.
 send(Msg) ->
     libhowl_server:cast(Msg).
+
+-spec call(Msg::fifo:smarl_message()) ->
+                  atom() |
+                  {ok, Reply::term()} |
+                  {error, no_server}.
+call(Msg) ->
+    case libhowl_server:call(Msg) of
+        {reply, Reply} ->
+            Reply;
+        E ->
+            E
+    end.

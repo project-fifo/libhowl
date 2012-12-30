@@ -1,12 +1,10 @@
 REBAR = $(shell pwd)/rebar
 
-.PHONY: deps rel package version
+.PHONY: deps rel package
 
 all: deps compile
 
-version:
-	echo "-define(VERSION, <<\"$(shell git symbolic-ref HEA		D 2> /dev/null | cut -b 12-)-$(shell git log --pretty=format:'%h, %ad' -1)\">>)." > src/libhowl_version.hrl
-compile: version
+compile:
 	$(REBAR) compile
 
 deps:
@@ -31,6 +29,8 @@ docs:
 ## Developer targets
 ##
 
+console: all
+	erl -pa ebin deps/*/ebin -s libhowl
 xref:
 	$(REBAR) xref skip_deps=true
 
