@@ -1,14 +1,17 @@
 -module(libhowl).
 
 -export([
-	 start/0,
-	 servers/0
-	]).
+         start/0,
+         servers/0
+        ]).
 
 
 -export([
-	 send/2
-	]).
+         send/2,
+         version/0
+        ]).
+
+-include("libhowl_version.hrl").
 
 %%%===================================================================
 %%% Generatl Functions
@@ -27,13 +30,25 @@ start() ->
     application:start(libhowl).
 
 %%--------------------------------------------------------------------
+%% @private
+%% @doc Fetches version
+%% @spec version() -> binary
+%% @end
+%%--------------------------------------------------------------------
+
+-spec version() -> ok.
+version() ->
+    {reply, ServerVersion} = libhowl_server:call(version),
+    {?VERSION, ServerVersion}.
+
+
+%%--------------------------------------------------------------------
 %% @doc Gets a list of servers
 %% @spec servers() -> [term()]
 %% @end
 %%--------------------------------------------------------------------
 
 -spec servers() -> [term()].
-
 servers() ->
     libhowl_server:servers().
 
