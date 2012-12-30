@@ -38,7 +38,7 @@ start() ->
 
 -spec version() -> ok.
 version() ->
-    {reply, ServerVersion} = libhowl_server:call(version),
+    ServerVersion = call(version),
     {?VERSION, ServerVersion}.
 
 
@@ -76,3 +76,15 @@ send(Channel, Message) ->
 -spec send(Msg::term()) -> ok.
 send(Msg) ->
     libhowl_server:cast(Msg).
+
+-spec call(Msg::fifo:smarl_message()) ->
+                  atom() |
+                  {ok, Reply::term()} |
+                  {error, no_server}.
+call(Msg) ->
+    case libhowl_server:call(Msg) of
+        {reply, Reply} ->
+            Reply;
+        E ->
+            E
+    end.
