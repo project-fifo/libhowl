@@ -11,8 +11,6 @@
          version/0
         ]).
 
--include("libhowl_version.hrl").
-
 %%%===================================================================
 %%% Generatl Functions
 %%%===================================================================
@@ -39,7 +37,7 @@ start() ->
 -spec version() -> ok.
 version() ->
     ServerVersion = call(version),
-    {?VERSION, ServerVersion}.
+    ServerVersion.
 
 
 %%--------------------------------------------------------------------
