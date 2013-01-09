@@ -12,19 +12,19 @@
 
 %% API
 -export([start_link/0,
-	 call/1,
-	 cast/1,
-	 servers/0]).
+         call/1,
+         cast/1,
+         servers/0]).
 
 %% gen_server callbacks
 -export([init/1,
-	 handle_call/3,
-	 handle_cast/2,
-	 handle_info/2,
-	 terminate/2,
-	 code_change/3]).
+         handle_call/3,
+         handle_cast/2,
+         handle_info/2,
+         terminate/2,
+         code_change/3]).
 
--define(SERVER, ?MODULE). 
+-define(SERVER, ?MODULE).
 
 -record(state, {zmq_worker}).
 
@@ -46,7 +46,7 @@ start_link() ->
 %% @doc
 %% This function sends a message to the server and waits for a reply.
 %%
-%% @spec call(Msg::term()) -> {error, no_server} | 
+%% @spec call(Msg::term()) -> {error, no_server} |
 %%                            {ok, Reply::term()}
 %% @end
 %%--------------------------------------------------------------------
@@ -78,7 +78,7 @@ cast(Msg) ->
 
 servers() ->
     gen_server:call(?SERVER, servers).
- 
+
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
@@ -121,9 +121,9 @@ handle_call(servers, _From, #state{zmq_worker = Pid} = State) ->
 
 handle_call({call, Msg}, From, #state{zmq_worker = Pid} = State) ->
     spawn(fun() ->
-		  Reply = mdns_client_lib:call(Pid, Msg),
-		  gen_server:reply(From, Reply)
-	  end),
+                  Reply = mdns_client_lib:call(Pid, Msg),
+                  gen_server:reply(From, Reply)
+          end),
     {noreply, State};
 
 handle_call(_Request, _From, State) ->

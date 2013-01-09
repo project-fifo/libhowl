@@ -1,14 +1,15 @@
 -module(libhowl).
 
 -export([
-	 start/0,
-	 servers/0
-	]).
+         start/0,
+         servers/0
+        ]).
 
 
 -export([
-	 send/2
-	]).
+         send/2,
+         version/0
+        ]).
 
 %%%===================================================================
 %%% Generatl Functions
@@ -27,13 +28,25 @@ start() ->
     application:start(libhowl).
 
 %%--------------------------------------------------------------------
+%% @private
+%% @doc Fetches version
+%% @spec version() -> binary
+%% @end
+%%--------------------------------------------------------------------
+
+-spec version() -> ok.
+version() ->
+    ServerVersion = call(version),
+    ServerVersion.
+
+
+%%--------------------------------------------------------------------
 %% @doc Gets a list of servers
 %% @spec servers() -> [term()]
 %% @end
 %%--------------------------------------------------------------------
 
 -spec servers() -> [term()].
-
 servers() ->
     libhowl_server:servers().
 
@@ -61,3 +74,15 @@ send(Channel, Message) ->
 -spec send(Msg::term()) -> ok.
 send(Msg) ->
     libhowl_server:cast(Msg).
+
+-spec call(Msg::fifo:smarl_message()) ->
+                  atom() |
+                  {ok, Reply::term()} |
+                  {error, no_server}.
+call(Msg) ->
+    case libhowl_server:call(Msg) of
+        {reply, Reply} ->
+            Reply;
+        E ->
+            E
+    end.

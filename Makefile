@@ -13,7 +13,7 @@ deps:
 clean:
 	$(REBAR) clean
 
-distclean: clean 
+distclean: clean
 	$(REBAR) delete-deps
 
 test:
@@ -29,6 +29,8 @@ docs:
 ## Developer targets
 ##
 
+console: all
+	erl -pa ebin deps/*/ebin -s libhowl
 xref:
 	$(REBAR) xref skip_deps=true
 
