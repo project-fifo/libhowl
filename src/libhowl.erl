@@ -59,6 +59,16 @@ servers() ->
 send(Channel, Message) ->
     send({msg, Channel, Message}).
 
+%%--------------------------------------------------------------------
+%% @doc Sends a message to a channel.
+%% @spec send([{Channel::term(), Message::term()}]) -> ok
+%% @end
+%%--------------------------------------------------------------------
+
+-spec send([{Channel::term(), Message::term()}]) -> ok.
+send(Messages) ->
+    send({msg, Messages}).
+
 %%%===================================================================
 %%% Internal Functions
 %%%===================================================================
