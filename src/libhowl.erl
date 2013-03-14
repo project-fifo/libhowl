@@ -7,6 +7,7 @@
 
 -export([
          send/2,
+         send/1,
          version/0
         ]).
 
@@ -57,7 +58,7 @@ servers() ->
 
 -spec send(Channel::term(), Message::term()) -> ok.
 send(Channel, Message) ->
-    send({msg, Channel, Message}).
+    send_({msg, Channel, Message}).
 
 %%--------------------------------------------------------------------
 %% @doc Sends a message to a channel.
@@ -66,8 +67,9 @@ send(Channel, Message) ->
 %%--------------------------------------------------------------------
 
 -spec send([{Channel::term(), Message::term()}]) -> ok.
+
 send(Messages) ->
-    send({msg, Messages}).
+    send_({msg, Messages}).
 
 %%%===================================================================
 %%% Internal Functions
@@ -80,8 +82,8 @@ send(Messages) ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send(Msg::term()) -> ok.
-send(Msg) ->
+-spec send_(Msg::term()) -> ok.
+send_(Msg) ->
     libhowl_server:cast(Msg).
 
 -spec call(Msg::fifo:smarl_message()) ->
