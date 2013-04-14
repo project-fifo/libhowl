@@ -34,7 +34,10 @@ start() ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec version() -> ok.
+-spec version() ->
+                     binary() |
+                     {error, no_servers}.
+
 version() ->
     ServerVersion = call(version),
     ServerVersion.
