@@ -35,7 +35,7 @@ start() ->
 %%--------------------------------------------------------------------
 
 -spec version() ->
-                     binary() |
+                     {ok, binary()} |
                      {error, no_servers}.
 
 version() ->
