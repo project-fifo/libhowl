@@ -39,7 +39,6 @@ version() ->
     ServerVersion = call(version),
     ServerVersion.
 
-
 %%--------------------------------------------------------------------
 %% @doc Gets a list of servers
 %% @spec servers() -> [term()]
@@ -56,7 +55,7 @@ servers() ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send(Channel::term(), Message::term()) -> ok.
+-spec send(Channel::fifo:uuid(), Message::fifo:object()) -> ok.
 send(Channel, Message) ->
     send_({msg, Channel, Message}).
 
@@ -66,7 +65,7 @@ send(Channel, Message) ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send([{Channel::term(), Message::term()}]) -> ok.
+-spec send([{Channel::fifo:uuid(), Message::fifo:object()}]) -> ok.
 
 send(Messages) ->
     send_({msg, Messages}).
@@ -86,7 +85,7 @@ send(Messages) ->
 send_(Msg) ->
     libhowl_server:cast(Msg).
 
--spec call(Msg::fifo:smarl_message()) ->
+-spec call(Msg::fifo:howl_message()) ->
                   atom() |
                   {ok, Reply::term()} |
                   {error, no_server}.
