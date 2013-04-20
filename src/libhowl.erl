@@ -80,7 +80,7 @@ send(Messages) ->
 %%--------------------------------------------------------------------
 %% @private
 %% @doc Sends a message.
-%% @spec send(Msg::term()) -> {ok, Reply::term()} | {error, no_server}
+%% @spec send_(Msg::term()) -> {ok, Reply::term()} | {error, no_server}
 %% @end
 %%--------------------------------------------------------------------
 
