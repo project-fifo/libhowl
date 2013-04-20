@@ -20,7 +20,7 @@ perl -pi.bak -e "s/\`\`\`/\'\'\'/g" README.md
 perl -pi -e "s/\'\'\'erlang/\`\`\`/g" README.md
 
 # create overview.edoc
-echo "@title libsnarl - SNARL interface library" > doc/overview.edoc
+echo "@title libhowl - howl interface library" > doc/overview.edoc
 echo "@copyright 2012 Heinz N. Gies" >> doc/overview.edoc
 echo "" >> doc/overview.edoc
 gsed -r -f tmp/bin/markedoc.sed README.md >> doc/overview.edoc
