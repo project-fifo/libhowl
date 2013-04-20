@@ -1,3 +1,0 @@
-{application,libhowl}.
-{packages,[]}.
-{modules,[libhowl_app,libhowl_server,libhowl_sup]}.
