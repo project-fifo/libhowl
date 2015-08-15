@@ -3,3 +3,4 @@ src/libhowl_version.hrl
 .eunit
 deps
 ebin
+_build
