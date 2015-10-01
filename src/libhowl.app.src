@@ -1,7 +1,7 @@
 {application, libhowl,
  [
   {description, "howl client library"},
-  {vsn, "0.1.28"},
+  {vsn, "0.1.29"},
   {registered, []},
   {applications, [
                   kernel,
