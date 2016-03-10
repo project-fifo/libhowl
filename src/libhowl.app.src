@@ -1,13 +1,10 @@
-{application, libhowl,
- [
-  {description, ""},
-  {vsn, "0.1.6"},
-  {registered, []},
-  {applications, [
-                  kernel,
-                  stdlib,
-		  mdns_client_lib
-                 ]},
-  {mod, { libhowl_app, []}},
-  {env, [{domain, ".local"}]}
- ]}.
+{application,libhowl,
+             [{description,"howl client library"},
+              {vsn,"0.1.34"},
+              {registered,[]},
+              {applications,[kernel,stdlib,mdns_client_lib]},
+              {mod,{libhowl_app,[]}},
+              {env,[{domain,".local"}]},
+              {maintainers,["Heinz N. Gies"]},
+              {licenses,["CDDL"]},
+              {links,[{"Github","https://github.com/project-fifo/libhowl"}]}]}.

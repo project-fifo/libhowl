@@ -1,5 +1,7 @@
+doc
 src/libhowl_version.hrl
 .eunit
 deps
 .eunit
 ebin
+_build

@@ -58,7 +58,7 @@ servers() ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send(Channel::fifo:uuid(), Message::fifo:object()) -> ok.
+-spec send(Channel::binary(), Message::fifo:object()) -> ok.
 send(Channel, Message) ->
     send_({msg, Channel, Message}).
 
@@ -68,7 +68,7 @@ send(Channel, Message) ->
 %% @end
 %%--------------------------------------------------------------------
 
--spec send([{Channel::fifo:uuid(), Message::fifo:object()}]) -> ok.
+-spec send([{Channel::binary(), Message::fifo:object()}]) -> ok.
 
 send(Messages) ->
     send_({msg, Messages}).
@@ -80,7 +80,7 @@ send(Messages) ->
 %%--------------------------------------------------------------------
 %% @private
 %% @doc Sends a message.
-%% @spec send(Msg::term()) -> {ok, Reply::term()} | {error, no_server}
+%% @spec send_(Msg::term()) -> {ok, Reply::term()} | {error, no_server}
 %% @end
 %%--------------------------------------------------------------------
 
