@@ -1,6 +1,6 @@
 {application,libhowl,
              [{description,"howl client library"},
-              {vsn,"0.1.34"},
+              {vsn,"0.1.35"},
               {registered,[]},
               {applications,[kernel,stdlib,mdns_client_lib]},
               {mod,{libhowl_app,[]}},
